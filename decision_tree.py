@@ -10,26 +10,17 @@ class DecisionTree(object):
         pass
     	
     def learn(self, X, y, par_node = {}, depth=0):
-        # TODO: Train the decision tree (self.tree) using the the sample X and labels y
-        # You will have to make use of the functions in utils.py to train the tree
+        # Train the decision tree (self.tree) using the the sample X and labels y
 
         # Use the function best_split in util.py to get the best split and 
         # data corresponding to left and right child nodes
-        
-        # One possible way of implementing the tree:
-        #    Each node in self.tree could be in the form of a dictionary:
-        #       https://docs.python.org/2/library/stdtypes.html#mapping-types-dict
-        #    For example, a non-leaf node with two children can have a 'left' key and  a 
-        #    'right' key. You can add more keys which might help in classification
-        #    (eg. split attribute and split value)
-        ### Implement your code here
-        #############################################
-        #number of zeros
+
+        # number of zeros
         n0 = 0
         for i in range(len(y)):
             if y[i] == 0: 
                 n0 += 1
-        #number of ones
+        # number of ones
         n1 = len(y)-n0
         
         if depth >= self.max_depth:
@@ -58,13 +49,11 @@ class DecisionTree(object):
             tree[split_attribute] = [split_point, self.learn(X_left, y_left, depth = depth + 1), self.learn(X_right, y_right, depth = depth + 1)]
             self.tree = tree
             return tree
-        #############################################
 
 
     def classify(self, record):
-        # TODO: classify the record using self.tree and return the predicted label
-        ### Implement your code here
-        #############################################
+        # classify the record using self.tree and return the predicted label
+
         classifier = self.tree
         while isinstance(classifier, dict):
             split_attribute = list(classifier.keys())[0]
@@ -72,4 +61,4 @@ class DecisionTree(object):
                 classifier = classifier[split_attribute][1]
             else: classifier = classifier[split_attribute][2]
         return classifier
-        #############################################
+
