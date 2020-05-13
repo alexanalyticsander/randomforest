@@ -4,8 +4,6 @@ import numpy as np  # http://www.numpy.org
 import ast
 from datetime import datetime
 
-# This starter code does not run. You will have to add your changes and
-# turn in code that runs properly.
 
 """
 Here, 
@@ -15,17 +13,6 @@ number of total records and d is the number of features of each record.
 3. XX is similar to X, except that XX also contains the data label for each
 record.
 """
-
-"""
-This skeleton is provided to help you implement the assignment.You must 
-implement the existing functions as necessary. You may add new functions
-as long as they are called from within the given classes. 
-
-VERY IMPORTANT!
-Do NOT change the signature of the given functions.
-Do NOT change any part of the main function APART from the forest_size parameter.  
-"""
-
 
 class RandomForest(object):
     num_trees = 0
@@ -48,21 +35,19 @@ class RandomForest(object):
     def _bootstrapping(self, XX, n):
         # Reference: https://en.wikipedia.org/wiki/Bootstrapping_(statistics)
         #
-        # TODO: Create a sample dataset of size n by sampling with replacement
+        # Create a sample dataset of size n by sampling with replacement
         #       from the original dataset XX.
-        # Note that you would also need to record the corresponding class labels
-        # for the sampled records for training purposes.
+        # Record the corresponding class labels for the sampled records for training purposes.
 
         samples = [] # sampled dataset
         labels = []  # class labels for the sampled records
-        ### Implement your code here
-        #############################################
+
         for i in range(n):
             index = np.random.randint(n)
             sample = XX[index]
             samples.append(sample[:-1])
             labels.append(sample[-1])
-        #############################################
+
         return (samples, labels)
 
     def bootstrapping(self, XX):
@@ -73,13 +58,11 @@ class RandomForest(object):
             self.bootstraps_labels.append(data_label)
 
     def fitting(self):
-        # TODO: Train `num_trees` decision trees using the bootstraps datasets
-        # and labels by calling the learn function from your DecisionTree class.
-        ### Implement your code here
-        #############################################
+        # Train `num_trees` decision trees using the bootstraps datasets
+        # and labels by calling the learn function from DecisionTree class.
+
         for i in range(self.num_trees):
             self.decision_trees[i].learn(self.bootstraps_datasets[i],self.bootstraps_labels[i])
-        #############################################
 
     def voting(self, X):
         y = []
@@ -103,36 +86,28 @@ class RandomForest(object):
             counts = np.bincount(votes)
 
             if len(counts) == 0:
-                # TODO: Special case
+                # Special case
                 #  Handle the case where the record is not an out-of-bag sample
                 #  for any of the trees.
-                ### Implement your code here
-                #############################################
+
                 #adding in bag prediction (slightly biased)
                 for tree in self.decision_trees:
                     inbagpred = tree.classify(record)
                     votes.append(inbagpred)
                 counts = np.bincount(votes)
                 y = np.append(y, np.argmax(counts))
-                #############################################
+
             else:
                 y = np.append(y, np.argmax(counts))
                 
         return y
 
     def user(self):
-        """
-        :return: string
-        your GTUsername, NOT your 9-Digit GTId  
-        """
-        ### Implement your code here
-        #############################################
         return 'asong49'
-        #############################################
 
 
 
-# DO NOT change the main function apart from the forest_size parameter!
+
 def main():
 
     # start time 
@@ -159,8 +134,7 @@ def main():
             y.append(xline[-1])
             XX.append(xline[:])
 
-    # TODO: Initialize according to your implementation
-    # VERY IMPORTANT: Minimum forest_size should be 10
+    # Initialize according to your implementation
     forest_size = 10
 
     # Initializing a random forest.
